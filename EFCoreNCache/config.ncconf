@@ -20,6 +20,4 @@
       <split-brain-recovery enable="False" detection-interval="60"/>
     </cache-settings>
   </cache-config>
-
-
 </configuration>
