@@ -12,12 +12,12 @@ namespace EFCoreNCache.Helpers
         private int StartingStoreId { get; set; }
         private int StartingConsumerId { get; set; }
         private int StartingProductId { get; set; }
-        private readonly SampleDbContext sampleDbContext;
+        private readonly SampleDbContext _sampleDbContext;
 
         public DbSeeder(SampleDbContext sampleDbContext)
         {
-            this.sampleDbContext = sampleDbContext;
-            this.Random = new Random();
+            _sampleDbContext = sampleDbContext;
+            Random = new Random();
         }
         public void RunSeed(int consumersQtt, int storesQtt, int productsQtt, int productsByConsumersQtt)
         {
@@ -27,32 +27,32 @@ namespace EFCoreNCache.Helpers
             var stores = NewStores(storesQtt);
             var products = NewProducts(productsQtt);
 
-            sampleDbContext.Consumers.AddRange(consumers);
-            sampleDbContext.Stores.AddRange(stores);
-            sampleDbContext.Products.AddRange(products);
+            _sampleDbContext.Consumers.AddRange(consumers);
+            _sampleDbContext.Stores.AddRange(stores);
+            _sampleDbContext.Products.AddRange(products);
 
-            sampleDbContext.SaveChanges();
+            _sampleDbContext.SaveChanges();
             Console.WriteLine("Consumers, stores and products saved.");
 
-            this.StartingConsumerId = sampleDbContext.Consumers.Count() - consumersQtt;
-            this.StartingProductId = sampleDbContext.Products.Count() - productsQtt;
-            this.StartingStoreId = sampleDbContext.Stores.Count() - storesQtt;
+            StartingConsumerId = _sampleDbContext.Consumers.Count() - consumersQtt;
+            StartingProductId = _sampleDbContext.Products.Count() - productsQtt;
+            StartingStoreId = _sampleDbContext.Stores.Count() - storesQtt;
 
             consumers = AssignStoresToConsumers(consumers, stores);
 
-            sampleDbContext.Consumers.UpdateRange(consumers);
-            sampleDbContext.SaveChanges();
+            _sampleDbContext.Consumers.UpdateRange(consumers);
+            _sampleDbContext.SaveChanges();
             Console.WriteLine("Consumers updated.");
 
             products = AssignStoresToProducts(products, stores);
 
-            sampleDbContext.Products.UpdateRange(products);
-            sampleDbContext.SaveChanges();
+            _sampleDbContext.Products.UpdateRange(products);
+            _sampleDbContext.SaveChanges();
             Console.WriteLine("Products updated.");
 
-            sampleDbContext.Transactions.AddRange(NewTransactions(productsByConsumersQtt,
+            _sampleDbContext.Transactions.AddRange(NewTransactions(productsByConsumersQtt,
                 consumers.Select(x => x.Id).ToList(), products.Select(x => x.Id).ToList()));
-            sampleDbContext.SaveChanges();
+            _sampleDbContext.SaveChanges();
             Console.WriteLine("Transactions saved.");
         }
 
@@ -112,8 +112,8 @@ namespace EFCoreNCache.Helpers
                 if (J == 1000)
                 {
                     int a = 1;
-                    sampleDbContext.Transactions.AddRange(result);
-                    sampleDbContext.SaveChanges();
+                    _sampleDbContext.Transactions.AddRange(result);
+                    _sampleDbContext.SaveChanges();
                     result = new List<Transaction>();
                     }
                 });

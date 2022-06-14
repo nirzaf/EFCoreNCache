@@ -19,8 +19,8 @@ namespace EFCoreNCache.Helpers
 
         public NCacheExtensions(SampleDbContext database)
         {
-            this.Database = database;
-            this.CachingOptions = new CachingOptions
+            Database = database;
+            CachingOptions = new CachingOptions
             {
                 QueryIdentifier = "Sample QueryIdentifier",
                 Priority = Alachisoft.NCache.Runtime.CacheItemPriority.Default,
@@ -33,7 +33,7 @@ namespace EFCoreNCache.Helpers
 
         public string AddSingleEntity<T>(T entity)
         {
-            Cache.Insert(entity, out string cacheKey, this.CachingOptions);
+            Cache.Insert(entity, out string cacheKey, CachingOptions);
             return cacheKey;
         }
         public void RemoveSingleEntity<T>(T entity)
